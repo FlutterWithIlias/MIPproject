@@ -17,6 +17,7 @@ use App\Http\Livewire\StaticSignUp;
 use App\Http\Livewire\Tables;
 use App\Http\Livewire\VirtualReality;
 use GuzzleHttp\Middleware;
+use App\Http\Controllers\DataController;
 
 /*
 |--------------------------------------------------------------------------
@@ -54,4 +55,8 @@ Route::get('virtual-reality', VirtualReality::class)->name('virtual-reality');
 Route::get('static-sign-in', StaticSignIn::class)->name('static-sign-in');
 Route::get('static-sign-up', StaticSignUp::class)->name('static-sign-up');
 Route::get('rtl', RTL::class)->name('rtl');
+Route::get('/fetch-data', [DataController::class, 'fetchData']);
+Route::get('/hhhh', [DataController::class, 'getFirstFourTemperatures']);
+
+
 });

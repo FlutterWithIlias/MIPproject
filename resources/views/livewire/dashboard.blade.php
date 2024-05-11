@@ -562,87 +562,75 @@
   </div>
   </div>
   @push('js')
-  <script src="{{ asset('assets') }}/js/plugins/chartjs.min.js"></script>
-  <script>
-      var ctx = document.getElementById("chart-bars").getContext("2d");
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-      new Chart(ctx, {
-          type: "bar",
-          data: {
-              labels: ["M", "T", "W", "T", "F", "S", "S"],
-              datasets: [{
-                  label: "Sales",
-                  tension: 0.4,
-                  borderWidth: 0,
-                  borderRadius: 4,
-                  borderSkipped: false,
-                  backgroundColor: "rgba(255, 255, 255, .8)",
-                  data: [50, 20, 10, 22, 50, 10, 40],
-                  maxBarThickness: 6
-              }, ],
-          },
-          options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              plugins: {
-                  legend: {
-                      display: false,
-                  }
-              },
-              interaction: {
-                  intersect: false,
-                  mode: 'index',
-              },
-              scales: {
-                  y: {
-                      grid: {
-                          drawBorder: false,
-                          display: true,
-                          drawOnChartArea: true,
-                          drawTicks: false,
-                          borderDash: [5, 5],
-                          color: 'rgba(255, 255, 255, .2)'
-                      },
-                      ticks: {
-                          suggestedMin: 0,
-                          suggestedMax: 500,
-                          beginAtZero: true,
-                          padding: 10,
-                          font: {
-                              size: 14,
-                              weight: 300,
-                              family: "Roboto",
-                              style: 'normal',
-                              lineHeight: 2
-                          },
-                          color: "#fff"
-                      },
-                  },
-                  x: {
-                      grid: {
-                          drawBorder: false,
-                          display: true,
-                          drawOnChartArea: true,
-                          drawTicks: false,
-                          borderDash: [5, 5],
-                          color: 'rgba(255, 255, 255, .2)'
-                      },
-                      ticks: {
-                          display: true,
-                          color: '#f8f9fa',
-                          padding: 10,
-                          font: {
-                              size: 14,
-                              weight: 300,
-                              family: "Roboto",
-                              style: 'normal',
-                              lineHeight: 2
-                          },
-                      }
-                  },
-              },
-          },
-      });
+<script>
+    // Function to fetch data from Laravel backend
+// Function to fetch data from Laravel backend
+function fetchData() {
+    fetch('/fetch-data')
+        .then(response => response.json())
+        .then(data => {
+            updateChart(data);
+        })
+        .catch(error => console.error('Error fetching data:', error));
+}
+
+// Function to update the chart with new data
+function updateChart(data) {
+
+    
+    // Assuming 'data' is an array of objects with 'temperature', 'humidity', 'time', and 'cordonne' properties
+    // Example: [{ temperature: 25, humidity: 50, time: '12:00', cordonne: 'A1' }, { ... }]
+    console.log(data)
+    // Extracting the temperature values for the chart
+    var temperatures = data.map(entry => entry.temperature);
+
+    // Update the chart data with the extracted temperatures
+    myChart.data.datasets[0].data = temperatures;
+    myChart.update();
+}
+
+// Create the chart with Chart.js
+var ctx = document.getElementById('chart-bars').getContext('2d');
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: ["lundi","mardi","mercredi","jeudi"], // Will be filled with time values
+        datasets: [{
+            label: 'Temperature',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1,
+            data: [] // Will be filled with temperature values
+          
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+    
+});
+
+// Fetch data initially
+fetchData();
+
+// Fetch data every 20 seconds
+setInterval(fetchData, 20000);
+
+
+    // Fetch data initially
+    fetchData();
+
+    // Fetch data every 20 seconds
+    setInterval(fetchData, 20000);
+</script>
 
 
       var ctx2 = document.getElementById("chart-line").getContext("2d");
