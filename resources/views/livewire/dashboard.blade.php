@@ -3,23 +3,22 @@
       <!-- End Navbar -->
       <div class="container-fluid py-4">
           <div class="row">
-              <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+          <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
                   <div class="card">
                       <div class="card-header p-3 pt-2">
                           <div
-                              class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
+                          class="icon icon-lg icon-shape bg-gradient-dark shadow-dark text-center border-radius-xl mt-n4 position-absolute">
                               <i class="material-icons opacity-10">weekend</i>
                           </div>
                           <div class="text-end pt-1">
-                              <p class="text-sm mb-0 text-capitalize"></p>
-                             
-    <h4 class="mb-0">{{$data}}°</h4>
-
+                              <p class="text-sm mb-0 text-capitalize">Temperature</p>
+                              <h4 class="mb-0">{{$data}}°C</h4>
                           </div>
                       </div>
                       <hr class="dark horizontal my-0">
                       <div class="card-footer p-3">
-                          <p class="mb-0"><span class="text-success text-sm font-weight-bolder">la temperature maximale capté </span></p>
+                          <p class="mb-0"><span class="text-success text-sm font-weight-bolder">+3% </span>than
+                              lask month</p>
                       </div>
                   </div>
               </div>
@@ -652,7 +651,7 @@ setInterval(fetchData, 20000);
                   borderWidth: 4,
                   backgroundColor: "transparent",
                   fill: true,
-                  data: [50, 40, 300, 320, 500, 350, 200, 230, 500],
+                  data: {!! $donnees !!},
                   maxBarThickness: 6
 
               }],
@@ -716,7 +715,21 @@ setInterval(fetchData, 20000);
               },
           },
       });
-
+      function updateChart() {
+    // Make an AJAX request to fetch new data and update the chart
+    $.ajax({
+        url: '/fetch-data', // Replace 'your_data_endpoint' with the actual endpoint to fetch new data
+        method: 'GET',
+        success: function(newData) {
+            // Update chart data with new data
+            chart.data.datasets[0].data = newData;
+            chart.update();
+        },
+        error: function(xhr, status, error) {
+            console.error("Error fetching data:", error);
+        }
+    });
+}
       var ctx3 = document.getElementById("chart-line-tasks").getContext("2d");
 
       new Chart(ctx3, {
@@ -740,7 +753,62 @@ setInterval(fetchData, 20000);
         }],
     },
     options: {
-        // Vos options ici
+        responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                  legend: {
+                      display: false,
+                  }
+              },
+              interaction: {
+                  intersect: false,
+                  mode: 'index',
+              },
+              scales: {
+                  y: {
+                      grid: {
+                          drawBorder: false,
+                          display: true,
+                          drawOnChartArea: true,
+                          drawTicks: false,
+                          borderDash: [5, 5],
+                          color: 'rgba(255, 255, 255, .2)'
+                      },
+                      ticks: {
+                          display: true,
+                          color: '#f8f9fa',
+                          padding: 10,
+                          font: {
+                              size: 14,
+                              weight: 300,
+                              family: "Roboto",
+                              style: 'normal',
+                              lineHeight: 2
+                          },
+                      }
+                  },
+                  x: {
+                      grid: {
+                          drawBorder: false,
+                          display: false,
+                          drawOnChartArea: false,
+                          drawTicks: false,
+                          borderDash: [5, 5]
+                      },
+                      ticks: {
+                          display: true,
+                          color: '#f8f9fa',
+                          padding: 10,
+                          font: {
+                              size: 14,
+                              weight: 300,
+                              family: "Roboto",
+                              style: 'normal',
+                              lineHeight: 2
+                          },
+                      }
+                  },
+              },
     },
 });
 

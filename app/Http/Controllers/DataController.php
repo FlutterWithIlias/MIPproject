@@ -12,24 +12,11 @@ class DataController extends Controller
 {
     
     // Récupérer les quatre premières valeurs de la table "temperature"
-    $data = table_name::take(4)->pluck('temperature');
-    echo($data);
+    $donnees = table_name::orderBy('created_at', 'desc')->pluck('temperature')->take(4)->toArray();
+    echo($donnees);
     // Adapter les données pour la réponse JSO
 
-    return response()->json($data);
-}
-public function fetch(){
-        // Récupérer les quatre premières valeurs de la table "temperature"
-        $data = table_name::take(4)->get();
-        echo($data);
-        // Adapter les données pour la réponse JSON
-        $formattedData = $data->map(function ($entry) {
-            return [
-                'label' => $entry->label, // Assurez-vous d'adapter cela à votre modèle
-                'value' => $entry->value  // Assurez-vous d'adapter cela à votre modèle
-            ];
-        });
-        return view('hhhh', ['data' => $data]); 
+    return response()->json($donnees);
 }
 
 public function getFirstFourTemperatures()

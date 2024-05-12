@@ -9,7 +9,9 @@ class Dashboard extends Component
     public function render()
     {
         $data = table_name::pluck('temperature')->min();
-        $donnees =table_name::pluck('temperature')->toArray();
+        $donnees = table_name::orderBy('created_at', 'desc')->pluck('temperature')->take(9)->toArray();
+
+
        
         return view('livewire.dashboard')->with('data', $data)->with('donnees', json_encode($donnees));
     }
